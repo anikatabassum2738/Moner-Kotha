@@ -40,7 +40,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <input type="text" placeholder="Full Name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F4156]">
                     
-                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F4156]">
+                            <label id="age-range-label" class="sr-only">Age Range</label>
+                            <select aria-labelledby="age-range-label" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F4156]">
                                 <option>Age Range</option>
                                 <option>18-24</option>
                                 <option>25-34</option>
@@ -48,7 +49,8 @@
                                 <option>45+</option>
                             </select>
                     
-                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F4156]">
+                            <label id="gender-label" class="sr-only">Gender</label>
+                            <select aria-labelledby="gender-label" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F4156]">
                                 <option>Gender</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -64,8 +66,8 @@
                     </div>
                     
                     <div class="flex items-start gap-2">
-                      <input type="checkbox" required class="mt-1" />
-                      <label class="flex items-start gap-2 text-sm text-gray-700">I agree that this information may only be used to contact me in case of critical risk to safety.</label>
+                      <input id="critical-risk-consent" type="checkbox" required class="mt-1" title="Consent to contact in case of critical risk" />
+                      <label for="critical-risk-consent" class="flex items-start gap-2 text-sm text-gray-700">I agree that this information may only be used to contact me in case of critical risk to safety.</label>
                     </div>
 
                     <div>
@@ -74,8 +76,13 @@
                       </button>
                     </div>
                 </form>
-            
-
+        
+            <div class="text-center mt-4">
+              <p class="text-sm text-gray-600">Already have an account?</p>
+              <a href="signIn.html" class="inline-block mt-2 bg-[#2F4156] text-white font-semibold py-2 px-6 rounded-lg hover:bg-[#1e2e3e] transition duration-200">
+                Sign In
+              </a>
+            </div>
         </div>
     </div>
 </body>

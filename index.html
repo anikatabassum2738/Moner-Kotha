@@ -30,7 +30,7 @@
             <div class="nav-links md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
                 <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                     <li><a class="hover:text-[#2F4156]" href="index.html">Home</a></li>
-                    <li><a class="hover:text-[#2F4156]" href="#therapists">Therapists</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="therapists.html">Therapists</a></li>
                     <li><a class="hover:text-[#2F4156]" href="#journal">Journal</a></li>
                     <li><a class="hover:text-[#2F4156]" href="#services">Services</a></li>
                     <li><a class="hover:text-[#2F4156]" href="#bookAppointment">Book Appointment</a></li>
@@ -38,10 +38,15 @@
 
             </div>
 
-            <div class="flex items-center gap-6">
-                <a href="signin.html" class="bg-[#C8D9E6] text-[#2F4156] px-5 py-2 rounded-lg hover:bg-[#F7CBCA] cursor-pointer">
+            <div class="relative group inline-block text-left">
+                <a href="#" class="bg-[#C8D9E6] text-[#2F4156] px-5 py-2 rounded-lg hover:bg-[#F7CBCA] cursor-pointer inline-block">
                     Sign In
                 </a>
+                <div class="absolute hidden group-hover:block bg-white shadow-lg round-lg mt-2 min-w-[180px] z-50">
+                    <a href="signinUser.html"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Sign in as User</a>
+                    <a href="signinTherapist.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Sign in as Therapist</a>
+                    <a href="adminLogin.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Admin Login</a>
+                </div>
                 <i onclick="onToggleMenu(this)" class='bx bx-menu text-3xl cursor-pointer hover:text-[#2F4156] md:hidden'></i>
                 
             </div>
