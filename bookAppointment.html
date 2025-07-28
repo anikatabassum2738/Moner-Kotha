@@ -31,9 +31,9 @@
                 <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                     <li><a class="hover:text-[#2F4156]" href="index.html">Home</a></li>
                     <li><a class="hover:text-[#2F4156]" href="therapists.html">Therapists</a></li>
-                    <li><a class="hover:text-[#2F4156]" href="#journal">Journal</a></li>
-                    <li><a class="hover:text-[#2F4156]" href="#services">Services</a></li>
-                    <li><a class="hover:text-[#2F4156]" href="#bookAppointment">Book Appointment</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="journal.html">Journal</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="services.html">Services</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="bookAppointment.html">Book Appointment</a></li>
                 </ul>
 
             </div>
@@ -54,46 +54,66 @@
             
         </nav>
     </header>
-    
+
     <!--header section ends-->
 
-    <!--Page title section starts-->
-
-    <section class="bg-white text-center py-20">
-        <h2 class="text-3xl font-semibold mb-4 text-[#2F4156]">
-            Therapists
-        </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-            Welcome to the Therapists page of Moner Kotha. Here you can find a list of our qualified therapists who are ready to help you on your mental health journey. Each therapist has their own unique approach and expertise, so feel free to explore their profiles to find the right fit for you.
-        </p>
+    <!--home section starts-->
+    <section class="text-center py-10">
+      <h2 class="text-3xl font-bold mb-4">Book a Therapy Session</h2>
+      <p class="text-lg">Choose your therapist and book a time that works for you.</p>
     </section>
 
-    <!--Page title section ends-->
+    <!-- Booking Form -->
+    <section class="w-[90%] md:w-[60%] mx-auto bg-white rounded-xl shadow-xl p-8 mb-10">
+      <form action="#" method="post" class="space-y-6">
 
-    <!--Therapist card section starts-->
-    <section class="w-[85%] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 py-20">
-        <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-            <img src="images/Dr A.png" alt="Dr A" class="rounded-full max-auto mb-4 w-24 h-24 object-cover" >
-            <h3 class="text-lg font-bold text-[#2F4156]">Dr. A</h3>
-            <p class="text-sm text-[#2F4156]">Licenced Clinical Psychologist</p>
-            <p class="text-sm text-gray-600 mt-2 italic">Full profile available after sign in</p>
+        <!-- Name -->
+        <div>
+          <label class="block mb-1 font-semibold">Your Name</label>
+          <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7CBCA]" placeholder="Enter your name" required />
         </div>
-   
-        <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-            <img src="images/Dr B.jpeg" alt="Dr B" class="rounded-full max-auto mb-4 w-24 h-24 object-cover" >
-            <h3 class="text-lg font-bold text-[#2F4156]">Dr. B</h3>
-            <p class="text-sm text-[#2F4156]">Mental Health Counselor</p>
-            <p class="text-sm text-gray-600 mt-2 italic">Full profile available after sign in</p>
+
+        <!-- Email -->
+        <div>
+          <label class="block mb-1 font-semibold">Email</label>
+          <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7CBCA]" placeholder="Enter your email" required />
         </div>
+
+        <!-- Therapist -->
+        <div>
+          <label for="therapist-select" class="block mb-1 font-semibold">Select Therapist</label>
+          <select id="therapist-select" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7CBCA]" required>
+            <option value="">-- Choose Therapist --</option>
+            <option>Dr. A</option>
+            <option>Mr. B</option>
+          </select>
+        </div>
+
+        <!-- Date -->
+        <div>
+          <label class="block mb-1 font-semibold">Preferred Date</label>
+          <input type="date" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7CBCA]" required placeholder="Select a date" title="Preferred Date" />
+        </div>
+
+        <!-- Time -->
+        <div>
+          <label class="block mb-1 font-semibold">Preferred Time</label>
+          <input type="time" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F7CBCA]" required placeholder="Select a time" title="Preferred Time" />
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center">
+          <button type="submit" class="bg-[#F7CBCA] text-[#2F4156] font-bold px-6 py-3 rounded-lg hover:bg-[#e4b5b4] transition">Book Appointment</button>
+        </div>
+      </form>
     </section>
-    <!--Therapist card section ends-->
-    
+    <!--booking form ends-->
+
     <!--Footer section starts-->
     <footer class="bg-white text-center text-[#2F4156] py-4 shadow-inner">
         <p class="text-sm">© 2025 Moner Kotha. All rights reserved.</p>
     </footer>
     <!--Footer section ends-->
-        
+
 </body>
 </html>
-            
