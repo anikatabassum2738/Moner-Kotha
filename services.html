@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moner Kotha</title>
+    <link rel="icon" href="images/Moner Kotha - Logo.png">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!--Icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!--Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+</head>
+<body class="font-[Poppins]">
+    
+    <!--header section starts-->
+
+    <header >
+        <nav class="flex justify-between items-center w-[85%] mx-auto ">
+            <div class="">
+                <img class="w-50" src="images/Moner Kotha - Logo.png" alt="Moner Kotha Logo">
+            </div>
+
+            <div class="nav-links md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
+                <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
+                    <li><a class="hover:text-[#2F4156]" href="index.html">Home</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="therapists.html">Therapists</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="journal.html">Journal</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="services.html">Services</a></li>
+                    <li><a class="hover:text-[#2F4156]" href="bookAppointment.html">Book Appointment</a></li>
+                </ul>
+
+            </div>
+
+            <div class="relative group inline-block text-left">
+                <a href="#" class="bg-[#C8D9E6] text-[#2F4156] px-5 py-2 rounded-lg hover:bg-[#F7CBCA] cursor-pointer inline-block">
+                    Sign In
+                </a>
+                <div class="absolute hidden group-hover:block bg-white shadow-lg round-lg mt-2 min-w-[180px] z-50">
+                    <a href="signinUser.html"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Sign in as User</a>
+                    <a href="signinTherapist.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Sign in as Therapist</a>
+                    <a href="adminLogin.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Admin Login</a>
+                </div>
+                <i onclick="onToggleMenu(this)" class='bx bx-menu text-3xl cursor-pointer hover:text-[#2F4156] md:hidden'></i>
+                
+            </div>
+
+            
+        </nav>
+    </header>
+
+    <!--header section ends-->
+
+    <!--home section starts-->
+    <section>
+        <div class="w-[75%] mx-auto flex flex-col md:flex-row items-center justify-between gap-5 py-10">
+            <div class="text-center md:text-left ">
+                <h1 class="text-2xl font-bold text-[#2F4156] text-shadow-lg mb-2">Welcome to Moner Kotha</h1>
+                <p class="text-[#2F4156] text-shadow-lg text-base leading-relaxed mb-4">Your journey to mental wellness starts here.</p>
+                <a href="bookAppointment.html" class="bg-[#C8D9E6] text-[#2F4156] px-5 py-2 rounded-lg hover:bg-[#F7CBCA] cursor-pointer ">Book Appointment</a>
+            </div>
+            <img src="images/service.jpg" alt="Hero Image" class="w-full md:w-[20rem] h-[auto] rounded-2xl shadow-2xl">
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Free Therapy -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-[#C8D9E6]">
+            <h3 class="text-xl font-semibold mb-2">Free Therapy</h3>
+            <ul class="list-disc list-inside text-base leading-relaxed">
+              <li>One free session per user with licensed therapists.</li>
+              <li>AI-powered anonymous chat anytime.</li>
+              <li>Access to public mental health resources and tips.</li>
+            </ul>
+          </div>
+
+          <!-- Paid Therapy -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-[#C8D9E6]">
+            <h3 class="text-xl font-semibold mb-2">Paid Therapy</h3>
+            <ul class="list-disc list-inside text-base leading-relaxed">
+              <li>Book follow-up sessions with your preferred therapist.</li>
+              <li>Flexible pricing and schedule based on your needs.</li>
+              <li>Secure messaging and session history access.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FAQs -->
+    <section class="bg-white py-10 px-6">
+        <div class="container mx-auto">
+          <h2 class="text-2xl font-bold text-[#2F4156] text-shadow-lg mb-6">Frequently Asked Questions</h2>
+
+          <div class="space-y-6">
+                <div>
+                    <h4 class="font-semibold text-[#2F4156] text-shadow-lg">Do I need to create an account?</h4>
+                    <p>Yes, an account is required to book sessions and maintain your journal securely.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#2F4156] text-shadow-lg">How does the free session work?</h4>
+                    <p>Each user gets one free therapist session after registration. No card required.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#2F4156] text-shadow-lg">Can I talk to someone anonymously?</h4>
+                    <p>Yes, the AI chatbot is always available anonymously. For therapist sessions, basic info is needed.</p>
+                </div>
+          </div>
+        </div>
+    </section>
+
+    <!--home section ends-->
+    <script>
+        const navLinks = document.querySelector('.nav-links');
+        
+        function onToggleMenu(icon) {
+            icon.classList.toggle('bx-menu');
+            icon.classList.toggle('bx-x');
+        
+            navLinks.classList.toggle('top-[25%]');
+        }
+        
+    </script>
+</body>
+</html>
