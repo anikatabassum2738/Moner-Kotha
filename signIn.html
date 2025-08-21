@@ -15,28 +15,28 @@
   <div class="bg-[#F1F7F7] shadow-lg rounded-lg p-8 w-full max-w-md space-y-6">
     <h2 class="text-2xl font-semibold text-center text-gray-800">Login to Moner Kotha</h2>
 
-    <form class="space-y-4">
+    <form class="space-y-4" action="#" method="post">
       <!-- Role Selection -->
       <div>
         <label class="block text-gray-700 mb-1" for="role">Login as</label>
         <select id="role" name="role" class="w-full border border-gray-300 rounded px-3 py-2">
-          <option>User</option>
-          <option>Therapist</option>
-          <option>Admin</option>
+          <option value="User">User</option>
+          <option value="Therapist">Therapist</option>
+          <option value="Admin">Admin</option>
         </select>
       </div>
 
       <!-- Email -->
       <div>
         <label class="block text-gray-700 mb-1" for="email">Email</label>
-        <input type="email" id="email" placeholder="you@example.com" required
+        <input type="email" id="email" name="email" placeholder="you@example.com" required
           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#A3B8B8]"/>
       </div>
 
       <!-- Password -->
       <div>
         <label class="block text-gray-700 mb-1" for="password">Password</label>
-        <input type="password" id="password" placeholder="••••••••" required
+        <input type="password" id="password" name="password" placeholder="••••••••" required
           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#A3B8B8]"/>
       </div>
 
@@ -50,6 +50,22 @@
     </form>
 
     <p class="text-sm text-center text-gray-600">Don't have an account? <a href="registration.html" class="text-[#5D737E] hover:underline">Register here</a></p>
-  </div>
+  </div> 
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const role = document.getElementById('role').value;
+      let dashboardUrl = '#';
+      if (role === 'User') {
+        dashboardUrl = 'userDashboard.html';
+      } else if (role === 'Therapist') {
+        dashboardUrl = 'therapistDashboard.html';
+      } else if (role === 'Admin') {
+        dashboardUrl = 'adminDashboard.html';
+      }
+      window.location.href = dashboardUrl;
+    });
+  </script>
 </body>
 </html>

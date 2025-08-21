@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Therapist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-pink-100 via-purple-100 to-indigo-100 min-h-screen flex items-center justify-center font-sans">
+
+  <div class="bg-white shadow-lg rounded-2xl w-full max-w-6xl h-[90vh] flex overflow-hidden">
+    
+    <!-- Sidebar Therapist List -->
+    <div class="w-1/4 bg-gradient-to-b from-purple-600 to-pink-500 text-white p-4">
+      <h2 class="text-xl font-bold mb-4">Therapists</h2>
+      <ul>
+        <li class="mb-3">
+          <button onclick="selectTherapist('Dr. A')" class="w-full text-left py-2 px-3 rounded-lg hover:bg-purple-700 transition">
+            Dr. A
+          </button>
+        </li>
+        <li>
+          <button onclick="selectTherapist('Dr. B')" class="w-full text-left py-2 px-3 rounded-lg hover:bg-purple-700 transition">
+            Dr. B
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <div id="chatHeader" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 text-lg font-semibold">
+        Select a therapist to start chatting
+      </div>
+
+      <!-- Messages -->
+      <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50">
+        <!-- Messages will appear here -->
+      </div>
+
+      <!-- Input -->
+      <div class="p-4 bg-white border-t flex items-center space-x-3">
+        <input id="chatInput" name="chatInput" type="text" placeholder="Type your message..." class="flex-1 border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+        <button type="button" onclick="sendMessage()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-2 rounded-xl shadow hover:opacity-90 transition">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentTherapist = null;
+
+    function selectTherapist(name) {
+      currentTherapist = name;
+      document.getElementById('chatHeader').innerText = "Chat with " + name;
+      document.getElementById('chatMessages').innerHTML = ""; // clear old chat
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message || !currentTherapist) return;
+
+      const chatMessages = document.getElementById('chatMessages');
+
+      // User message
+      const userMsg = document.createElement('div');
+      userMsg.className = "text-right";
+      userMsg.innerHTML = `<span class="inline-block bg-purple-500 text-white px-4 py-2 rounded-xl shadow">${message}</span>`;
+      chatMessages.appendChild(userMsg);
+
+      // Therapist auto-reply
+      setTimeout(() => {
+        const reply = document.createElement('div');
+        reply.className = "text-left";
+        reply.innerHTML = `<span class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded-xl shadow">${currentTherapist} will respond to: "${message}"</span>`;
+        chatMessages.appendChild(reply);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 800);
+
+      input.value = "";
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>

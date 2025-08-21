@@ -27,7 +27,7 @@
                 <img class="w-48" src="images/Moner Kotha - Logo.png" alt="Moner Kotha Logo">
             </div>
 
-            <div class="nav-links md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5">
+            <div class="nav-links md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 transition-all duration-300">
                 <ul class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
                     <li><a class="hover:text-[#2F4156]" href="index.html">Home</a></li>
                     <li><a class="hover:text-[#2F4156]" href="therapists.html">Therapists</a></li>
@@ -42,11 +42,6 @@
                 <a href="signIn.html" class="bg-[#C8D9E6] text-[#2F4156] px-5 py-2 rounded-lg hover:bg-[#F7CBCA] cursor-pointer inline-block">
                     Sign In
                 </a>
-                <div class="absolute hidden group-hover:block bg-white shadow-lg round-lg mt-2 min-w-[180px] z-70">
-                    <a href="user.html"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Sign in as User</a>
-                    <a href="signinTherapist.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Sign in as Therapist</a>
-                    <a href="adminLogin.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100 rounded-t-lg">Admin Login</a>
-                </div>
                 <i onclick="onToggleMenu(this)" class='bx bx-menu text-3xl cursor-pointer hover:text-[#2F4156] md:hidden'></i>
                 
             </div>
@@ -59,7 +54,7 @@
 
     <!--home section starts-->
 
-    <section class="bg-[]">
+    <section class="bg-[poppins]">
         <div class="w-[85%] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 py-20">
             <div class="md:w-1/2 w-full">
                 <h1 class="text-4xl md:text-5xl font-bold text-[#2F4156] text-shadow-lg mb-4">
@@ -121,7 +116,7 @@
     <footer class="text-[#2F4156] text-shadow-lg py-5" >
         <div class="w-[85%] mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
             <div class="text-center md:text-left">
-                <img class="w-36 mb-2" src="images/Moner Kotha - Logo.png" alt="Moner Kotha Logo">
+                <img class="w-32 mb-2" src="images/Moner Kotha - Logo.png" alt="Moner Kotha Logo">
                 <p class="text-sm">© 2025 Moner Kotha. All rights reserved.</p>
             </div>
         </div>
@@ -135,8 +130,14 @@
         function onToggleMenu(icon) {
             icon.classList.toggle('bx-menu');
             icon.classList.toggle('bx-x');
-        
-            navLinks.classList.toggle('top-[25%]');
+            
+            if (navLinks.classList.contains('top-[-100%]')) {
+                navLinks.classList.remove('top-[-100%]');
+                navLinks.classList.add('top-[25%]');
+            } else {
+                navLinks.classList.remove('top-[25%]');
+                navLinks.classList.add('top-[-100%]');
+            }
         }
         
     </script>

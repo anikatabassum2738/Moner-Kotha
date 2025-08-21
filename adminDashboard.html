@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — Moner Kotha</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --mk-primary: #2F4156;
+      --mk-accent: #C8D9E6;
+      --mk-pink: #F7CBCA;
+    }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    .table-fixed thead th { position: sticky; top: 0; background: white; z-index: 10; }
+  </style>
+</head>
+<body class="bg-[#F7F5F2] text-[var(--mk-primary)] min-h-screen">
+
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-[var(--mk-accent)] flex flex-col">
+      <div class="p-6">
+        <img src="images/Moner Kotha - Logo.png" alt="logo" class="w-40 mb-4 object-contain"/>
+        <div class="text-sm text-gray-600">Admin Console</div>
+      </div>
+
+      <nav class="flex-1 px-4 py-6 space-y-2">
+        <button id="navDashboard" class="w-full text-left px-3 py-2 rounded-lg bg-[var(--mk-accent)] text-[var(--mk-primary)] font-medium">Dashboard</button>
+        <button id="navUsers" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#EEF4F6]">Users</button>
+        <button id="navTherapists" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#EEF4F6]">Therapists</button>
+        <button id="navAppointments" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#EEF4F6]">Appointments</button>
+        <button id="navPayments" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#EEF4F6]">Payments</button>
+        <button id="navSettings" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#EEF4F6]">Settings</button>
+      </nav>
+
+      <div class="p-4 border-t border-[var(--mk-accent)]">
+        <button id="logoutBtn" class="w-full text-left px-3 py-2 rounded-lg text-red-600 hover:bg-[#fff2f2]">Sign out</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main id="main" class="flex-1 p-6 overflow-auto">
+      <!-- Dashboard view (default) -->
+      <section id="view-dashboard">
+        <header class="flex items-start justify-between mb-6">
+          <div>
+            <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+            <p class="text-sm text-gray-600">Overview and quick actions</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <button id="refreshBtn" class="px-3 py-2 rounded-lg bg-[var(--mk-pink)] text-[var(--mk-primary)]">Refresh Data</button>
+            <button id="exportAllBtn" class="px-3 py-2 rounded-lg border border-[var(--mk-accent)]">Export CSV</button>
+          </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <div class="text-sm text-gray-500">Total Users</div>
+            <div id="statUsers" class="text-2xl font-bold">0</div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <div class="text-sm text-gray-500">Therapists</div>
+            <div id="statTherapists" class="text-2xl font-bold">0</div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <div class="text-sm text-gray-500">Appointments</div>
+            <div id="statAppointments" class="text-2xl font-bold">0</div>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <div class="text-sm text-gray-500">Revenue (BDT)</div>
+            <div id="statRevenue" class="text-2xl font-bold">0</div>
+          </div>
+        </div>
+
+        <!-- Quick panels -->
+        <div class="grid lg:grid-cols-3 gap-4">
+          <!-- Recent activity -->
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <h3 class="font-semibold mb-3">Recent Activity</h3>
+            <ul id="recentActivity" class="text-sm space-y-2 text-gray-700">
+              <!-- injected -->
+            </ul>
+          </div>
+
+          <!-- Pending therapist approvals -->
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <h3 class="font-semibold mb-3">Pending Therapist Approvals</h3>
+            <div id="pendingTherapists" class="space-y-3">
+              <!-- injected -->
+            </div>
+          </div>
+
+          <!-- Quick settings -->
+          <div class="bg-white p-4 rounded-2xl shadow border border-[var(--mk-accent)]">
+            <h3 class="font-semibold mb-3">Quick Settings</h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex items-center justify-between">
+                <label for="freeSessionToggle" class="mr-2">Free trial session enabled</label>
+                <input id="freeSessionToggle" type="checkbox" title="Enable or disable free trial session" />
+              </div>
+              <div>
+                <label class="text-xs text-gray-500">Site title</label>
+                <input id="siteTitle" class="w-full mt-1 px-2 py-1 border rounded-lg" placeholder="Enter site title" title="Site title" />
+              </div>
+              <div>
+                <button id="saveSiteBtn" class="mt-2 px-3 py-2 rounded-lg bg-[var(--mk-accent)]">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Users view -->
+      <section id="view-users" class="hidden">
+        <header class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">Users</h2>
+          <input id="userSearch" type="search" placeholder="Search users..." class="px-3 py-2 border rounded-lg" />
+        </header>
+
+        <div class="bg-white rounded-2xl shadow border border-[var(--mk-accent)] overflow-auto">
+          <table class="min-w-full divide-y table-fixed">
+            <thead class="bg-white">
+              <tr>
+                <th class="px-4 py-3 text-left text-sm">Name</th>
+                <th class="px-4 py-3 text-left text-sm">Email</th>
+                <th class="px-4 py-3 text-left text-sm">Joined</th>
+                <th class="px-4 py-3 text-left text-sm">Status</th>
+                <th class="px-4 py-3 text-right text-sm">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable" class="bg-white divide-y">
+              <!-- users injected -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Therapists view -->
+      <section id="view-therapists" class="hidden">
+        <header class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">Therapists</h2>
+          <input id="therapistSearch" type="search" placeholder="Search therapists..." class="px-3 py-2 border rounded-lg" />
+        </header>
+
+        <div class="bg-white rounded-2xl shadow border border-[var(--mk-accent)] overflow-auto p-4">
+          <div id="therapistsTable" class="space-y-3">
+            <!-- therapist cards injected -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Appointments view -->
+      <section id="view-appointments" class="hidden">
+        <header class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">Appointments</h2>
+          <input id="apptSearch" type="search" placeholder="Search appointments..." class="px-3 py-2 border rounded-lg" />
+        </header>
+
+        <div class="bg-white rounded-2xl shadow border border-[var(--mk-accent)] overflow-auto p-4">
+          <ul id="appointmentsList" class="space-y-3">
+            <!-- appointments injected -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- Payments view -->
+      <section id="view-payments" class="hidden">
+        <header class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">Payments</h2>
+          <div class="flex items-center gap-3">
+            <button id="exportPaymentsBtn" class="px-3 py-2 rounded-lg border border-[var(--mk-accent)]">Export CSV</button>
+          </div>
+        </header>
+
+        <div class="bg-white rounded-2xl shadow border border-[var(--mk-accent)] p-4">
+          <div id="paymentsSummary" class="text-sm text-gray-700">
+            <!-- payments data -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings view -->
+      <section id="view-settings" class="hidden">
+        <header class="mb-4">
+          <h2 class="text-xl font-semibold">Settings</h2>
+        </header>
+        <div class="bg-white rounded-2xl shadow border border-[var(--mk-accent)] p-4">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm mb-1">Site title</label>
+              <input id="settingsSiteTitle" class="w-full px-3 py-2 border rounded-lg" placeholder="Enter site title" title="Site title" />
+            </div>
+            <div>
+              <label for="settingsSupportEmail" class="block text-sm mb-1">Support email</label>
+              <input id="settingsSupportEmail" class="w-full px-3 py-2 border rounded-lg" />
+            </div>
+            <div>
+              <button id="saveSettingsBtn" class="px-3 py-2 rounded-lg bg-[var(--mk-accent)]">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Script: demo data + UI logic -->
+  <script>
+    // ---------- Demo data (replace with real API calls) ----------
+    const DEMO_USERS = [
+      { id:'u1', name:'Anika Rahman', email:'anika@example.com', joined:'2024-11-01', status:'active' },
+      { id:'u2', name:'Rafiq Khan', email:'rafiq@example.com', joined:'2025-02-14', status:'active' },
+      { id:'u3', name:'Sadia Noor', email:'sadia@example.com', joined:'2025-03-02', status:'deactivated' }
+    ];
+
+    const DEMO_THERAPISTS = [
+      { id:'t1', name:'Dr. Ayesha Rahman', specialty:'Clinical Psychologist', approved:false, joined:'2024-09-10', bio:'PhD in Clinical Psychology.' },
+      { id:'t2', name:'Dr. Farah Islam', specialty:'Counseling Psychologist', approved:true, joined:'2024-07-22', bio:'Focus on adolescent therapy.' }
+    ];
+
+    const DEMO_APPOINTMENTS = [
+      { id:'ap1', client:'Anika Rahman', therapist:'t2', time:'2025-08-03T16:00:00', status:'confirmed', fee:800 },
+      { id:'ap2', client:'Rafiq Khan', therapist:'t1', time:'2025-08-05T10:00:00', status:'pending', fee:0 },
+      { id:'ap3', client:'Sadia Noor', therapist:'t2', time:'2025-07-22T11:00:00', status:'completed', fee:1200 }
+    ];
+
+    const DEMO_PAYMENTS = [
+      { id:'p1', at:'2025-07-22', method:'bKash', amount:1200, by:'Sadia Noor' },
+      { id:'p2', at:'2025-06-30', method:'Nagad', amount:800, by:'Anika Rahman' }
+    ];
+
+    // ---------- Utility functions ----------
+    function $(id){ return document.getElementById(id); }
+    function timeLabel(iso){ const d = new Date(iso); return d.toLocaleString(); }
+
+    // ---------- Render functions ----------
+    function renderStats(){
+      $('statUsers').textContent = DEMO_USERS.length;
+      $('statTherapists').textContent = DEMO_THERAPISTS.length;
+      $('statAppointments').textContent = DEMO_APPOINTMENTS.length;
+      const rev = DEMO_PAYMENTS.reduce((s,p)=>s + (p.amount||0), 0);
+      $('statRevenue').textContent = rev.toLocaleString();
+    }
+
+    function renderRecentActivity(){
+      const ul = $('recentActivity');
+      ul.innerHTML = '';
+      const items = [
+        'New user Anika registered',
+        'Therapist Dr. A applied for approval',
+        'Payment received from Sadia (bKash)'
+      ];
+      items.forEach(i => {
+        const li = document.createElement('li');
+        li.className = 'text-sm text-gray-700';
+        li.textContent = i;
+        ul.appendChild(li);
+      });
+    }
+
+    function renderPendingTherapists(){
+      const box = $('pendingTherapists');
+      box.innerHTML = '';
+      const pending = DEMO_THERAPISTS.filter(t=>!t.approved);
+      if (pending.length===0) { box.innerHTML = '<div class="text-sm text-gray-500">No pending approvals.</div>'; return; }
+      pending.forEach(t=>{
+        const div = document.createElement('div');
+        div.className = 'p-3 border border-[#E8F0F4] rounded-lg flex items-center justify-between';
+        div.innerHTML = `<div>
+            <div class="font-medium">${t.name}</div>
+            <div class="text-xs text-gray-500">${t.specialty}</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 bg-[var(--mk-accent)] rounded-lg approve-btn" data-id="${t.id}">Approve</button>
+            <button class="px-3 py-1 border rounded-lg reject-btn" data-id="${t.id}">Reject</button>
+          </div>`;
+        box.appendChild(div);
+      });
+    }
+
+    function renderUsersTable(filter=''){
+      const tbody = $('usersTable');
+      tbody.innerHTML = '';
+      const users = DEMO_USERS.filter(u => u.name.toLowerCase().includes(filter.toLowerCase()) || u.email.toLowerCase().includes(filter.toLowerCase()));
+      users.forEach(u=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="px-4 py-3">${u.name}</td>
+                        <td class="px-4 py-3">${u.email}</td>
+                        <td class="px-4 py-3">${u.joined}</td>
+                        <td class="px-4 py-3">${u.status}</td>
+                        <td class="px-4 py-3 text-right">
+                          <button class="px-2 py-1 text-sm border rounded mr-2 deactivate-btn" data-id="${u.id}">${u.status==='active'?'Deactivate':'Activate'}</button>
+                          <button class="px-2 py-1 text-sm text-red-600 delete-user" data-id="${u.id}">Delete</button>
+                        </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTherapistsList(filter=''){
+      const container = $('therapistsTable');
+      container.innerHTML = '';
+      const list = DEMO_THERAPISTS.filter(t => t.name.toLowerCase().includes(filter.toLowerCase()) || t.specialty.toLowerCase().includes(filter.toLowerCase()));
+      list.forEach(t=>{
+        const div = document.createElement('div');
+        div.className = 'p-3 border border-[#E8F0F4] rounded-lg flex items-start justify-between';
+        div.innerHTML = `<div>
+            <div class="font-medium">${t.name}</div>
+            <div class="text-xs text-gray-500">${t.specialty} • Joined ${t.joined}</div>
+            <div class="text-sm mt-2 text-gray-600">${t.bio}</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="text-sm">${t.approved?'<span class=\"text-green-600 font-semibold\">Approved</span>':'<span class=\"text-yellow-600 font-semibold\">Pending</span>'}</div>
+            <div>
+              <button class="px-3 py-1 rounded-lg approve-btn" data-id="${t.id}">${t.approved?'Revoke':'Approve'}</button>
+            </div>
+          </div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderAppointments(filter=''){
+      const ul = $('appointmentsList');
+      ul.innerHTML = '';
+      const list = DEMO_APPOINTMENTS.filter(a => (a.client.toLowerCase().includes(filter.toLowerCase()) || (a.therapist && therapistNameById(a.therapist).toLowerCase().includes(filter.toLowerCase()))));
+      list.forEach(a=>{
+        const li = document.createElement('li');
+        li.className = 'p-3 border border-[#E8F0F4] rounded-lg flex items-center justify-between';
+        li.innerHTML = `<div>
+            <div class="font-medium">${a.client} • ${therapistNameById(a.therapist)}</div>
+            <div class="text-xs text-gray-500">${timeLabel(a.time)} • ${a.mode||'—'}</div>
+          </div>
+          <div class="flex flex-col items-end gap-2">
+            <div class="text-sm">${a.status==='confirmed'?'<span class=\"text-green-600\">Confirmed</span>': a.status==='pending'?'<span class=\"text-yellow-600\">Pending</span>':'<span class=\"text-gray-500\">'+a.status+'</span>'}</div>
+            <div>
+              <button class="px-3 py-1 rounded-lg confirm-btn" data-id="${a.id}">Confirm</button>
+              <button class="px-3 py-1 rounded-lg ml-2 cancel-btn" data-id="${a.id}">Cancel</button>
+            </div>
+          </div>`;
+        ul.appendChild(li);
+      });
+    }
+
+    function renderPayments(){
+      const el = $('paymentsSummary');
+      const total = DEMO_PAYMENTS.reduce((s,p)=>s+(p.amount||0),0);
+      el.innerHTML = `<div class="mb-3">Total payments: <strong>${total.toLocaleString()} BDT</strong></div>`;
+      const table = document.createElement('table');
+      table.className = 'w-full text-sm';
+      table.innerHTML = '<thead><tr><th class="text-left">Date</th><th class="text-left">Method</th><th class="text-left">Amount</th><th class="text-left">By</th></tr></thead>';
+      const tbody = document.createElement('tbody');
+      DEMO_PAYMENTS.forEach(p=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="py-1">${p.at}</td><td>${p.method}</td><td>${p.amount}</td><td>${p.by}</td>`;
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      el.appendChild(table);
+    }
+
+    // helpers
+    function therapistNameById(id){ const t = DEMO_THERAPISTS.find(x=>x.id===id); return t? t.name : '—'; }
+
+    // ---------- Actions wiring ----------
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStats(); renderRecentActivity(); renderPendingTherapists();
+      renderUsersTable(); renderTherapistsList(); renderAppointments(); renderPayments();
+
+      // Nav
+      const views = ['Dashboard','Users','Therapists','Appointments','Payments','Settings'];
+      function show(view){
+        views.forEach(v=> $('view-'+v.toLowerCase()).classList.add('hidden'));
+        $('view-'+view.toLowerCase()).classList.remove('hidden');
+      }
+      document.getElementById('navDashboard').addEventListener('click', ()=> show('Dashboard'));
+      document.getElementById('navUsers').addEventListener('click', ()=> show('Users'));
+      document.getElementById('navTherapists').addEventListener('click', ()=> show('Therapists'));
+      document.getElementById('navAppointments').addEventListener('click', ()=> show('Appointments'));
+      document.getElementById('navPayments').addEventListener('click', ()=> show('Payments'));
+      document.getElementById('navSettings').addEventListener('click', ()=> show('Settings'));
+
+      // Approve/reject therapist (delegated)
+      document.body.addEventListener('click', (e) => {
+        if (e.target.closest('.approve-btn')) {
+          const id = e.target.closest('.approve-btn').dataset.id;
+          const t = DEMO_THERAPISTS.find(x=>x.id===id);
+          if (t) { t.approved = !t.approved; renderPendingTherapists(); renderTherapistsList(); renderStats(); }
+        }
+        if (e.target.closest('.reject-btn')) {
+          const id = e.target.closest('.reject-btn').dataset.id;
+          // remove or mark rejected
+          const idx = DEMO_THERAPISTS.findIndex(x=>x.id===id);
+          if (idx>-1) { DEMO_THERAPISTS.splice(idx,1); renderPendingTherapists(); renderTherapistsList(); renderStats(); }
+        }
+        if (e.target.closest('.deactivate-btn')) {
+          const id = e.target.closest('.deactivate-btn').dataset.id;
+          const u = DEMO_USERS.find(x=>x.id===id);
+          if (u) { u.status = u.status==='active' ? 'deactivated' : 'active'; renderUsersTable(); renderStats(); }
+        }
+        if (e.target.closest('.delete-user')) {
+          const id = e.target.closest('.delete-user').dataset.id;
+          const idx = DEMO_USERS.findIndex(x=>x.id===id);
+          if (idx>-1) { if (confirm('Delete user?')) { DEMO_USERS.splice(idx,1); renderUsersTable(); renderStats(); } }
+        }
+        if (e.target.closest('.confirm-btn')) {
+          const id = e.target.closest('.confirm-btn').dataset.id;
+          const a = DEMO_APPOINTMENTS.find(x=>x.id===id);
+          if (a) { a.status='confirmed'; renderAppointments(); renderStats(); }
+        }
+        if (e.target.closest('.cancel-btn')) {
+          const id = e.target.closest('.cancel-btn').dataset.id;
+          const a = DEMO_APPOINTMENTS.find(x=>x.id===id);
+          if (a) { a.status='cancelled'; renderAppointments(); renderStats(); }
+        }
+      });
+
+      // Search handlers
+      $('userSearch').addEventListener('input', (e)=> renderUsersTable(e.target.value));
+      $('therapistSearch').addEventListener('input', (e)=> renderTherapistsList(e.target.value));
+      $('apptSearch').addEventListener('input', (e)=> renderAppointments(e.target.value));
+
+      // Approve buttons from pending section
+      $('pendingTherapists').addEventListener('click', (e)=>{
+        const btn = e.target.closest('.approve-btn');
+        if (btn) { const id = btn.dataset.id; const t = DEMO_THERAPISTS.find(x=>x.id===id); if (t){ t.approved = true; renderPendingTherapists(); renderTherapistsList(); renderStats(); alert(t.name+' approved'); } }
+      });
+
+      // Export CSV
+      $('exportAllBtn').addEventListener('click', ()=> {
+        const rows = [['type','id','name','extra']];
+        DEMO_USERS.forEach(u => rows.push(['user',u.id,u.name,u.email]));
+        DEMO_THERAPISTS.forEach(t => rows.push(['therapist',t.id,t.name,t.specialty]));
+        DEMO_APPOINTMENTS.forEach(a => rows.push(['appointment',a.id,a.client + ' / ' + therapistNameById(a.therapist), a.time]));
+        downloadCSV(rows,'monerkotha_export.csv');
+      });
+
+      // Payments export
+      $('exportPaymentsBtn').addEventListener('click', ()=> {
+        const rows=[['id','date','method','amount','by']];
+        DEMO_PAYMENTS.forEach(p=> rows.push([p.id,p.at,p.method,p.amount,p.by]));
+        downloadCSV(rows,'payments.csv');
+      });
+
+      // Simple settings save
+      $('saveSiteBtn').addEventListener('click', ()=> {
+        $('siteTitle').value && alert('Site title saved (demo): ' + $('siteTitle').value);
+      });
+      $('saveSettingsBtn').addEventListener('click', ()=> {
+        alert('Settings saved (demo). Integrate with backend to persist.');
+      });
+
+      // Refresh
+      $('refreshBtn').addEventListener('click', ()=> { renderStats(); renderRecentActivity(); renderPendingTherapists(); alert('Refreshed (demo). In production this would fetch latest API data.'); });
+
+      // Export payments CSV
+      // (No need to trigger click recursively; already handled above)
+
+    });
+
+    // ---------- Utility: CSV download ----------
+    function downloadCSV(rows, filename='export.csv'){
+      const csv = rows.map(r => r.map(c=> `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type:'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // ---------- Initial render calls (already invoked on DOMContentLoaded too) ----------
+    // renderStats(); renderRecentActivity(); renderPendingTherapists(); // handled in DOMContentLoaded
+
+    // ---------- Notes ----------
+    // Replace all DEMO_* arrays with real API fetches:
+    // - GET /admin/stats
+    // - GET /admin/users
+    // - GET /admin/therapists
+    // - GET /admin/appointments
+    // - POST /admin/therapists/:id/approve
+    // - POST /admin/users/:id/deactivate
+    // - etc.
+  </script>
+</body>
+</html>

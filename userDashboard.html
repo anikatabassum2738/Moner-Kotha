@@ -21,14 +21,15 @@
     
     <!--sidebar section starts-->
 
-    <div>
-        <aside>
+    <div class="flex min-h-screen ">
+        <aside class="fixed top-0 left-0 w-60 h-full bg-white shadow-lg z-50 ">
             <div>
-                <div>
-                    <img class="w-50" src="images/Moner Kotha - Logo.png" alt="Moner Kotha Logo">
+                <div class="mb-10">
+                    <img class="w-48" src="images/Moner Kotha - Logo.png" alt="Moner Kotha Logo">
+                    </main>
                 </div>
                 <nav>
-                    <ul class="flex flex-col items-start gap-4 p-4">
+                    <ul class="flex flex-col gap-4 p-4 items-center">
                         <li><a class="hover:text-[#2F4156]" href="index.html">Home</a></li>
                         <li><a class="hover:text-[#2F4156]" href="therapists.html">Therapists</a></li>
                         <li><a class="hover:text-[#2F4156]" href="journal.html">Journal</a></li>
@@ -36,9 +37,276 @@
                         <li><a class="hover:text-[#2F4156]" href="bookAppointment.html">Book Appointment</a></li>
                     </ul>
                 </nav>
+            </div>  
+            <div class="flex justify-center mt-4">
+                <a href="index.html" class="bg-[#C8D9E6] text-[#2F4156] px-5 py-2 rounded-lg hover:bg-[#F7CBCA] cursor-pointer w-auto">Logout</a>
+            </div>
+        </aside>
+        
+        <!--main content section starts-->
+        <main class="flex-1 ml-60 p-6 ">
+            <h1 class="text-2xl font-bold mb-6">User Dashboard</h1>
+            <div class="bg-white border border-[#C8D9E6] rounded-2xl shadow p-5 md:p-6 ">
+                <h2 class="text-xl font-semibold mb-4">Welcome, User!</h2>
+                <p class="text-gray-700">Here you can manage your appointments, view your journal entries, and access other features.</p>
+            </div>
+
+            <div class="bg-white border border-[#C8D9E6] rounded-2xl shadow grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 p-5 md:p-6" >
+                
+                <div class="grid items-center gap-2">
+                    <section class="bg-white border border-[#C8D9E6] rounded-2xl shadow p-5 md:p-6" id="affirmationCard">
+                       <div>
+                         <h3 class="text-xl font-semibold text-[#2F4156]">Daily Affirmation</h3>
+                         <p id="affirmationText" class="mt-3 text-[#2F4156] text-lg leading-relaxed">…</p>
+                         <p id="affirmationDate" class="mt-2 text-xs text-gray-500"></p>
+                       </div>
+                     </section>
+                </div>
+                <!-- Therapist Info / Next Appointment -->
+                <section class="bg-white border border-[#C8D9E6] rounded-2xl shadow p-5 md:p-6 mt-3" id="therapistCard">
+                  <!-- Header (hidden when no appointment) -->
+                  <div class="therapist-header flex items-start gap-4">
+                    <img id="therapistAvatar" src="images/Dr A.png"
+                         alt="Therapist avatar"
+                         class="w-14 h-14 rounded-full ring-2 ring-[#C8D9E6] object-cover">
+                    <div class="flex-1">
+                      <h3 class="text-xl font-semibold text-[#2F4156]">Your Therapist</h3>
+                      <p id="therapistName" class="mt-1 font-medium text-[#2F4156]">—</p>
+                      <p id="therapistSpec" class="text-sm text-gray-500">—</p>
+                    </div>
+                  </div>
+
+                  <!-- Appointment block renders here -->
+                  <div id="apptBlock" class="mt-5"></div>
+                </section>                
             </div>
             
-        </aside>
+            <!-- Session History -->
+            <section class="bg-white border border-[#C8D9E6] rounded-2xl shadow p-5 md:p-6 mt-3" id="sessionHistory">
+            <h3 class="text-xl font-semibold text-[#2F4156] mb-4">Session History</h3>
+            <ul class="space-y-3">
+                <!-- Example Session Item -->
+                <li class="flex items-center justify-between bg-[#F9FBFC] border border-[#E2EBF3] rounded-lg px-4 py-3">
+                <div>
+                    <p class="font-medium text-[#2F4156]">Therapy Session with Dr. A</p>
+                    <p class="text-sm text-gray-500">July 15, 2025 • 4:00 PM</p>
+                </div>
+                <button class="text-sm text-[#2F4156] font-medium hover:underline">View Notes</button>
+                </li>
+
+                <li class="flex items-center justify-between bg-[#F9FBFC] border border-[#E2EBF3] rounded-lg px-4 py-3">
+                <div>
+                    <p class="font-medium text-[#2F4156]">Therapy Session with Dr. B</p>
+                    <p class="text-sm text-gray-500">August 1, 2025 • 6:00 PM</p>
+                </div>
+                <button class="text-sm text-[#2F4156] font-medium hover:underline">View Notes</button>
+                </li>
+            </ul>
+            </section>
+
+            
+
     </div>
+
+<script>
+/* ====== CONFIG ====== */
+// relative path to your json file
+const AFFIRMATIONS_JSON_PATH = '/data/affirmations.json';
+// storage key prefix
+const STORAGE_KEY_PREFIX = 'mk_affirmation_';
+
+/* ====== Built-in fallback list (used if fetch fails) ====== */
+const FALLBACK_AFFIRMATIONS = [
+  "I am worthy of love, rest, and joy.",
+  "I can handle what comes my way, one step at a time.",
+  "My feelings are valid; I give them space.",
+  "I choose progress over perfection today.",
+  "I am safe, grounded, and present in this moment.",
+  "I honor my needs and set healthy boundaries.",
+  "I am learning, healing, and growing every day.",
+  "I treat myself with the kindness I offer others.",
+  "I release what I can’t control and focus on what I can.",
+  "I am enough, exactly as I am."
+];
+
+/* ====== Helpers ====== */
+function todayKey() {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function indexForDate(dateStr, length) {
+  // Simple deterministic hash of date string -> 0..length-1
+  let h = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    h = (h * 31 + dateStr.charCodeAt(i)) >>> 0;
+  }
+  return h % length;
+}
+
+/* ====== DOM elements ====== */
+const elText = document.getElementById('affirmationText');
+const elDate = document.getElementById('affirmationDate');
+
+/* ====== Core logic ====== */
+let AFFIRMATIONS = null; // will be set to the fetched array or fallback
+
+function saveToLocalToday(text) {
+  const key = STORAGE_KEY_PREFIX + todayKey();
+  try {
+    localStorage.setItem(key, text);
+  } catch (e) {
+    // ignore storage errors
+  }
+}
+
+function getLocalToday() {
+  const key = STORAGE_KEY_PREFIX + todayKey();
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    return null;
+  }
+}
+
+function displayAffirmation(text) {
+  elText.textContent = text;
+  elDate.textContent = `Updated for ${new Date().toLocaleDateString()}`;
+}
+
+/* Choose and display today's affirmation (uses AFFIRMATIONS array) */
+function chooseAndDisplayForToday() {
+  if (!Array.isArray(AFFIRMATIONS) || AFFIRMATIONS.length === 0) {
+    AFFIRMATIONS = FALLBACK_AFFIRMATIONS;
+  }
+
+  const local = getLocalToday();
+  if (local) {
+    displayAffirmation(local);
+    return;
+  }
+
+  const idx = indexForDate(todayKey(), AFFIRMATIONS.length);
+  const aff = AFFIRMATIONS[idx];
+  displayAffirmation(aff);
+  saveToLocalToday(aff);
+}
+
+/* schedule refresh at local midnight */
+function scheduleMidnightRefresh() {
+  const now = new Date();
+  const next = new Date(now);
+  next.setHours(24, 0, 0, 0); // tomorrow at 00:00
+  const ms = next - now;
+  setTimeout(() => {
+    // Clear today's local value (let logic re-evaluate in case JSON changed) and reload
+    try { localStorage.removeItem(STORAGE_KEY_PREFIX + todayKey()); } catch(e){}
+    chooseAndDisplayForToday();
+    scheduleMidnightRefresh();
+  }, ms + 1000); // +1s buffer
+}
+
+/* ====== Fetch JSON then init ====== */
+async function initAffirmationsCard() {
+  // Attempt to fetch JSON (same-origin path expected). We do a short timeout.
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
+
+    const res = await fetch(AFFIRMATIONS_JSON_PATH, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    if (!res.ok) throw new Error('Network response not ok');
+    const data = await res.json();
+    if (Array.isArray(data.affirmations) && data.affirmations.length > 0) {
+      AFFIRMATIONS = data.affirmations;
+    } else {
+      AFFIRMATIONS = FALLBACK_AFFIRMATIONS;
+    }
+  } catch (err) {
+    // Fetch failed — use fallback and continue; do not show error to user.
+    AFFIRMATIONS = FALLBACK_AFFIRMATIONS;
+    // console.warn('Affirmations JSON load failed, using fallback.', err);
+  }
+
+  chooseAndDisplayForToday();
+  scheduleMidnightRefresh();
+}
+
+/* Start */
+initAffirmationsCard();
+
+/* ------------------ THERAPIST / NEXT APPOINTMENT ------------------ */
+/*
+  Set NEXT_APPOINTMENT to:
+  - null  -> shows \"No appointment scheduled\" state
+  - object -> renders next session details
+*/
+const NEXT_APPOINTMENT = {
+  therapist: {
+    name: 'Dr. A',
+    specialty: 'Psychotherapist',
+    avatar: 'images/Dr A.png' // optional path
+  },
+  when: '2025-08-26T17:00:00', // ISO date-time
+  mode: 'Call'
+};
+// For testing \"no appointment\" state, set:
+// const NEXT_APPOINTMENT = null;
+
+function renderTherapistCard() {
+  const card = document.getElementById('therapistCard');
+  const header = card.querySelector('.therapist-header');
+  const apptBlock = document.getElementById('apptBlock');
+  const nameEl = document.getElementById('therapistName');
+  const specEl = document.getElementById('therapistSpec');
+  const avatarEl = document.getElementById('therapistAvatar');
+
+  if (!NEXT_APPOINTMENT) {
+    // Hide header info and show empty-state block
+    header.classList.add('hidden');
+    apptBlock.innerHTML = `
+      <div class="p-5 border border-dashed border-[#C8D9E6] rounded-xl bg-[#F8FBFF] text-[#2F4156]">
+        <p class="font-semibold">No appointment scheduled</p>
+        <p class="text-sm text-gray-500 mt-1">When you're ready, book a session.</p>
+        <a href="book-appointment.html"
+           class="inline-block mt-3 px-4 py-2 rounded-lg bg-[#C8D9E6] text-[#2F4156] hover:bg-[#bcd0de] transition">
+          Book appointment
+        </a>
+      </div>`;
+    return;
+  }
+
+  // Fill therapist info
+  nameEl.textContent = NEXT_APPOINTMENT.therapist?.name || 'Your Therapist';
+  specEl.textContent = NEXT_APPOINTMENT.therapist?.specialty || '';
+  if (avatarEl && NEXT_APPOINTMENT.therapist?.avatar) avatarEl.src = NEXT_APPOINTMENT.therapist.avatar;
+
+  // Date formatting
+  const dt = new Date(NEXT_APPOINTMENT.when);
+  const dateStr = dt.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+  const timeStr = dt.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+
+  apptBlock.innerHTML = `
+    <div class="mt-4 flex items-center justify-between bg-[#F7CBCA]/40 border border-[#F7CBCA] rounded-xl p-4">
+      <div>
+        <p class="text-sm text-gray-600">Next session</p>
+        <p class="font-semibold text-[#2F4156]">${dateStr} • ${timeStr}</p>
+        <p class="text-xs text-gray-600">${NEXT_APPOINTMENT.mode || ''}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="chat-session.html"
+           class="px-4 py-2 rounded-lg bg-[#F7CBCA] text-[#2F4156] hover:bg-[#f2b2b1] transition">
+          Join
+        </a>
+      </div>
+    </div>`;
+}
+document.addEventListener('DOMContentLoaded', renderTherapistCard);
+</script>    
+
 </body>        
 </html>
